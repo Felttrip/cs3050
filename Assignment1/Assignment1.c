@@ -15,17 +15,22 @@
  *   simple cycle criteria                                     !
  *-------------------------------------------------------------*/
 
+#include <stdlib.h>
 #include <stdio.h>
+#define MAXV 50
 
 //structure for adjacency node, each vertex will have its own set of nodes
 typedef struct _aNode{
     int index;  //index of vertex
-    struct node *nextPtr; //pointer for next vertex
+    struct _aNode *nextPtr; //pointer for next vertex
 }aNode;                                                                   
 
 //function prototypes
 int readInput(char *filename);
-void buildList(aNode *node, int nextV);
+void buildList(int v1, int v2);
+
+//global array
+aNode *array[MAXV];
 
 //main function
 int main(int argc,char **argv)
@@ -54,13 +59,43 @@ int readInput(char *filename)
 {
   //Needed variables
   FILE *fPtr;  //File pointer
-  int v1, v2;  //Variables to represent verticies
+  int v1; 
+  int v2;  //Variables to represent verticies
   
   //Attempt to open file
   if((fPtr=fopen(filename,"r"))==NULL)
   {
     printf("Error reading file, exiting now\n"); 
     return 1; //return 1 if error
+  }
+  
+  //read file line by line
+  while(fscanf(fPtr,"%d%d",&v1,&v2)!=EOF)
+  {  
+    buildList(v1,v2); 
   }  
 return 0;
+}
+
+void buildList(int v1, int v2)
+{
+  if(array[v1]==NULL)
+  {
+    aNode *tempVert = malloc(sizeof(aNode));
+    tempVert->index=v2;
+    tempVert->nextPtr=NULL;
+  }
+  else
+  {
+    aNode *tempVert = malloc(sizeof(aNode));
+    tempVert->index = v2;
+    tempVert->nextPtr = NULL;
+    aNode *curr=array[v1];
+    while(curr->nextPtr!=NULL)
+    {
+      curr=curr->nextPtr;
+    }
+    curr->nextPtr=tempVert;
+  }
+  
 }
