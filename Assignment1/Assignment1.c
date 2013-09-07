@@ -48,6 +48,18 @@ int main(int argc,char **argv)
 
   else
     printf("good open");
+    int i;
+    aNode *curr;
+    for(i=0;i<5;i++)
+    {
+      curr=array[i];
+      while(curr!=NULL)
+      {
+        printf("%d ",curr->index);
+        curr=curr->nextPtr;
+      }
+      printf("\n");
+    }
   
   
 
@@ -70,28 +82,30 @@ int readInput(char *filename)
   }
   
   //read file line by line
-  while(fscanf(fPtr,"%d%d",&v1,&v2)!=EOF)
-  {  
+  while(fscanf(fPtr,"%d %d",&v1,&v2)!=EOF)
+  {
     buildList(v1,v2); 
   }  
 return 0;
 }
 
+//list building function
 void buildList(int v1, int v2)
 {
-  if(array[v1]==NULL)
+  if(array[v1]==NULL)//check to see if vertex has been initialized
   {
-    aNode *tempVert = malloc(sizeof(aNode));
-    tempVert->index=v2;
-    tempVert->nextPtr=NULL;
+    aNode *tempVert = malloc(sizeof(aNode));//create vertex
+    tempVert->index=v2;                     //set index
+    tempVert->nextPtr=NULL;                 //set pointer to null
+    array[v1]=tempVert;
   }
-  else
+  else //vertex already exists
   {
-    aNode *tempVert = malloc(sizeof(aNode));
-    tempVert->index = v2;
-    tempVert->nextPtr = NULL;
+    aNode *tempVert = malloc(sizeof(aNode)); //create vertex
+    tempVert->index = v2;                    
+    tempVert->nextPtr = NULL;                 
     aNode *curr=array[v1];
-    while(curr->nextPtr!=NULL)
+    while(curr->nextPtr!=NULL) // step through adjacency list untill the end is reached
     {
       curr=curr->nextPtr;
     }
