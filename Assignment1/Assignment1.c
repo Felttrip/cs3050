@@ -27,7 +27,7 @@ typedef struct _aNode{
 
 //function prototypes
 int readInput(char *filename);
-void buildList(int v1, int v2);
+int buildList(int v1, int v2);
 
 //global array
 aNode *array[MAXV];
@@ -43,10 +43,16 @@ int main(int argc,char **argv)
   }
 
   //read inputs
-  if(readInput(argv[1])) //if file fails to read exit program
+  int eCheck=readInput(argv[1]);
+  if(eCheck==1) //if file fails to read exit program
     return 1;
-
+  else if (eCheck==2)
+  {
+    printf("NO");
+    return 1;
+  }
   else
+  {
     printf("good open");
     int i;
     aNode *curr;
@@ -60,6 +66,7 @@ int main(int argc,char **argv)
       }
       printf("\n");
     }
+  }
   
   
 
@@ -84,13 +91,14 @@ int readInput(char *filename)
   //read file line by line
   while(fscanf(fPtr,"%d %d",&v1,&v2)!=EOF)
   {
-    buildList(v1,v2); 
+   if(buildList(v1,v2))
+     return 2;
   }  
 return 0;
 }
 
 //list building function
-void buildList(int v1, int v2)
+int buildList(int v1, int v2)
 {
   if(array[v1]==NULL)//check to see if vertex has been initialized
   {
@@ -98,10 +106,11 @@ void buildList(int v1, int v2)
     tempVert->index=v2;                     //set index
     tempVert->nextPtr=NULL;                 //set pointer to null
     array[v1]=tempVert;
+    return 0;
   }
   else //vertex already exists
   {
-    aNode *tempVert = malloc(sizeof(aNode)); //create vertex
+    /*aNode *tempVert = malloc(sizeof(aNode)); //create vertex
     tempVert->index = v2;                    
     tempVert->nextPtr = NULL;                 
     aNode *curr=array[v1];
@@ -109,7 +118,9 @@ void buildList(int v1, int v2)
     {
       curr=curr->nextPtr;
     }
-    curr->nextPtr=tempVert;
+    curr->nextPtr=tempVert;*/
+    //each edge is listed once so if a vertex has a seccond listing then it will fail
+    return 1;
   }
   
 }
