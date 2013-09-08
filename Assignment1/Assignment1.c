@@ -11,8 +11,13 @@
  *   a graph G is a simple cycle or not.                       !
  *                                                             !
  * IDEA                                                        !
- *   Create a adjacency list and then check said list for      !
- *   simple cycle criteria                                     !
+ *   Create a adjacency list, if durring the creation of the   !
+ *   list if the v1 vertex is already created the list won't   !
+ *   be a simple cycle and fail.  If the list is created       !
+ *   succesfully, a walk will be preformed. Durring this walk  !
+ *   we will check to see if there are multiple cycles         !
+ *   in the adjacency list, if not this must be a simple       !
+ *   cycle. This should preform in linear time.                !
  *-------------------------------------------------------------*/
 
 #include <stdlib.h>
@@ -31,6 +36,8 @@ int buildList(int v1, int v2);
 
 //global array
 aNode *array[MAXV];
+//global count for the array, this keeps track of the size of the array;
+int max;
 
 //main function
 int main(int argc,char **argv)
@@ -53,19 +60,7 @@ int main(int argc,char **argv)
   }
   else
   {
-    printf("good open");
-    int i;
-    aNode *curr;
-    for(i=0;i<5;i++)
-    {
-      curr=array[i];
-      while(curr!=NULL)
-      {
-        printf("%d ",curr->index);
-        curr=curr->nextPtr;
-      }
-      printf("\n");
-    }
+    walk();
   }
   
   
@@ -80,7 +75,7 @@ int readInput(char *filename)
   FILE *fPtr;  //File pointer
   int v1; 
   int v2;  //Variables to represent verticies
-  
+  max = 0;
   //Attempt to open file
   if((fPtr=fopen(filename,"r"))==NULL)
   {
@@ -91,8 +86,10 @@ int readInput(char *filename)
   //read file line by line
   while(fscanf(fPtr,"%d %d",&v1,&v2)!=EOF)
   {
-   if(buildList(v1,v2))
-     return 2;
+    if(v1>=max)  //keep track of the size of the array
+      max=v1; 
+    if(buildList(v1,v2))//Returns one if a vertex has more than two edges
+      return 2;
   }  
 return 0;
 }
@@ -110,6 +107,8 @@ int buildList(int v1, int v2)
   }
   else //vertex already exists
   {
+    //comenting out this portion of code, may be usefull for future assignments    
+
     /*aNode *tempVert = malloc(sizeof(aNode)); //create vertex
     tempVert->index = v2;                    
     tempVert->nextPtr = NULL;                 
@@ -119,8 +118,28 @@ int buildList(int v1, int v2)
       curr=curr->nextPtr;
     }
     curr->nextPtr=tempVert;*/
-    //each edge is listed once so if a vertex has a seccond listing then it will fail
+
+    //each edge is listed once so if a vertex has a second listing then it will fail
     return 1;
   }
   
+}
+
+//walk
+int walk(void)
+{
+  int next = 1;
+  int count = 0;
+  do
+  {
+    next=array[next]->index;
+    count++;
+  }
+  while(next!=1);
+  
+  if(count==max)
+    printf("YES");
+  else
+    printf("NO");
+return 0;
 }
