@@ -88,7 +88,7 @@ int readInput(char *filename)
   {
     if(v1>=max)  //keep track of the size of the array
       max=v1; 
-    if(buildList(v1,v2))//Returns one if a vertex has more than two edges
+    if(buildList(v1,v2))//Returns two if a vertex has more than two edges
       return 2;
   }  
 return 0;
@@ -105,7 +105,16 @@ int buildList(int v1, int v2)
     array[v1]=tempVert;
     return 0;
   }
-  else //vertex already exists
+  else if(array[v2]==NULL)//check to see if edges has been created from connecting vertex
+  {
+    aNode *tempVert = malloc(sizeof(aNode));//create vertex
+    tempVert->index=v1;                     //set index
+    tempVert->nextPtr=NULL;                 //set pointer to null
+    array[v2]=tempVert;
+    return 0;
+
+  }
+  else //edge already exists
   {
     //comenting out this portion of code, may be usefull for future assignments    
 
@@ -127,7 +136,7 @@ int buildList(int v1, int v2)
 
 //walk
 int walk(void)
-{
+{ 
   int next = 1;
   int count = 0;
   do
