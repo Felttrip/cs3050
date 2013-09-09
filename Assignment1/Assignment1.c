@@ -12,12 +12,16 @@
  *                                                             !
  * IDEA                                                        !
  *   Create a adjacency list, if durring the creation of the   !
- *   list if the v1 vertex is already created the list won't   !
+ *   list if the edge is already created the list won't        !
  *   be a simple cycle and fail.  If the list is created       !
  *   succesfully, a walk will be preformed. Durring this walk  !
  *   we will check to see if there are multiple cycles         !
  *   in the adjacency list, if not this must be a simple       !
- *   cycle. This should preform in linear time.                !
+ *   cycle. This should preform in linear time because durring !
+ *   reading stage and graph that isn't a set of simple cycles !
+ *   will be rejected.  This allows us to only have one pass   !
+ *   on the created adjacency list to check that a walk can be !
+ *   preformed.                                                !
  *-------------------------------------------------------------*/
 
 #include <stdlib.h>
