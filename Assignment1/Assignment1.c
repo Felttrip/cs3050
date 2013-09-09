@@ -91,7 +91,9 @@ int readInput(char *filename)
   while(fscanf(fPtr,"%d %d",&v1,&v2)!=EOF)
   {
     if(v1>=max)  //keep track of the size of the array
-      max=v1; 
+      max=v1;
+    if(v2>=max)
+      max=v2; 
     if(buildList(v1,v2))//Returns two if a vertex has more than two edges
       return 2;
   }  
